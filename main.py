@@ -24,24 +24,31 @@ def useCam():
 def verify():
     start_time = time.time()
 
-    result = DeepFace.verify(
-        img1_path = "my_portrait.jpeg", 
-        img2_path = "image_c.jpg", 
-        model_name = "ArcFace",
-        detector_backend="retinaface",
-        distance_metric="cosine",
-        enforce_detection=False
-    )
-
-    print(result)
-    print("Time taken: %s seconds" % (time.time() - start_time))
-
-    if result["verified"]:
-        print("The faces are of the same person.")
-        return True
-    else:
-        print("The faces are of different people.")
-        return False
+    try:
+        result = DeepFace.verify(
+            img1_path = "my_portrait.jpeg", 
+            img2_path = "image_c.jpg", 
+            model_name = "ArcFace",
+            detector_backend = "retinaface",
+            distance_metric = "cosine",
+            enforce_detection = False,
+            anti_spoofing = True
+        )
+        print(result)
+        print("Time taken: %s seconds" % (time.time() - start_time))
+        if result["verified"]:
+            print("The faces are of the same person.")
+            return True
+        else:
+            print("The faces are of different people.")
+            return False
+    except Exception as e:
+        if "Spoof detected" in str(e):
+            print("Spoofing detected! Access denied.")
+            return False
+        else:
+            print("An error occurred during verification:", str(e))
+            return False
 
 def main():
     while True:
