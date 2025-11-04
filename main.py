@@ -74,7 +74,10 @@ def main():
             print("Access Granted")
         else:
             print("Access Denied")
-            os.system('osascript -e \'tell application "System Events" to keystroke "q" using {control down, command down}\'')
+            if os.name == "nt":
+                os.system("rundll32.exe user32.dll,LockWorkStation")
+            else:
+                os.system('osascript -e \'tell application "System Events" to keystroke "q" using {control down, command down}\'')
             exit()
         time.sleep(detection_interval)
 
