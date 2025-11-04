@@ -2,6 +2,10 @@ from deepface import DeepFace
 import time
 import cv2
 import os
+import argparse
+
+argparser = argparse.ArgumentParser()
+argparser.add_argument("-s", "--speed", help="high / low interval of face verification", default="low")
 
 def useCam():
     # Open the default camera (usually index 0)
@@ -50,7 +54,19 @@ def verify():
             print("An error occurred during verification:", str(e))
             return False
 
+def start():
+    args = argparser.parse_args()
+    if str(args.speed) == "high":
+        detection_interval = 1
+    elif str(args.speed) == "low":
+        detection_interval = 5
+    else:
+        print("Invalid speed argument. Using default 'low' interval.")
+        detection_interval = 5
+    return detection_interval
+
 def main():
+    detection_interval = start()
     while True:
         useCam()
         samePerson = verify()
@@ -60,6 +76,6 @@ def main():
             print("Access Denied")
             os.system('osascript -e \'tell application "System Events" to keystroke "q" using {control down, command down}\'')
             exit()
-        time.sleep(2)
+        time.sleep(detection_interval)
 
 main()
