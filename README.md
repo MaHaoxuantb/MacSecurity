@@ -29,4 +29,4 @@ This respository accepts and welcome your contribution.
 
 ## Info
 
-These codes belong to ThomasB. Open-source under GNU3.0 license.
+These codes belong to ThomasB. Open-source under Apache License 2.0.
