@@ -1,11 +1,20 @@
+import enum
 from deepface import DeepFace
 import time
 import cv2
 import os
 import argparse
 
+# Starter
+class Mode(enum.Enum):
+    NORMAL = "normal"
+    STRICT = "strict"
+
+# Arguments
 argparser = argparse.ArgumentParser()
 argparser.add_argument("-s", "--speed", help="high / low interval of face verification", default="low")
+argparser.add_argument("-m", "--mode", help="mode of operation", default="normal")
+
 
 def useCam():
     # Open the default camera (usually index 0)
@@ -17,7 +26,8 @@ def useCam():
         exit()
 
     # Allow the camera to warm up
-    time.sleep(1)
+    # Adjust this if not MacBook Cam
+    time.sleep(0.8)
 
     # Capture a single frame
     ret, frame = cap.read()
@@ -25,7 +35,10 @@ def useCam():
     # Save the captured frame as an image file
     cv2.imwrite("image_c.jpg", frame)
 
-def verify():
+    # Release the camera
+    cap.release()
+
+def verify(mode: Mode):
     start_time = time.time()
 
     try:
@@ -42,7 +55,21 @@ def verify():
         print("Time taken: %s seconds" % (time.time() - start_time))
         if result["verified"]:
             print("The faces are of the same person.")
-            return True
+            
+            # Treat problems for the strict mode
+            if mode == Mode.STRICT:
+                if result["distance"] > 0.4: # adjust this if not MacBook
+                    print("Strict mode: Distance too high. Access denied.")
+                    return False
+                if result["confidence"] < 0.8:
+                    print("Strict mode: Confidence too low. Access denied.")
+                    return False
+                return True
+            elif mode == Mode.NORMAL:
+                return True
+            else: # no need for this part
+                assert "Unreachable code reached"
+                return False
         else:
             print("The faces are of different people.")
             return False
@@ -56,6 +83,7 @@ def verify():
 
 def start():
     args = argparser.parse_args()
+
     if str(args.speed) == "high":
         detection_interval = 1
     elif str(args.speed) == "low":
@@ -63,13 +91,24 @@ def start():
     else:
         print("Invalid speed argument. Using default 'low' interval.")
         detection_interval = 5
-    return detection_interval
+    
+    if str(args.mode) == "normal":
+        mode = Mode.NORMAL
+        print("Operating in normal mode.")
+    elif str(args.mode) == "strict":
+        mode = Mode.STRICT
+        print("Operating in strict mode.")
+    else:
+        mode = Mode.NORMAL
+        print("Invalid mode argument. Using default 'normal' mode.")
+
+    return detection_interval, mode
 
 def main():
-    detection_interval = start()
+    detection_interval, mode = start()
     while True:
         useCam()
-        samePerson = verify()
+        samePerson = verify(mode)
         if samePerson:
             print("Access Granted")
         else:
@@ -81,4 +120,5 @@ def main():
             exit()
         time.sleep(detection_interval)
 
-main()
+if __name__ == "__main__":
+    main()
