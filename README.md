@@ -1,7 +1,7 @@
 # MacSecurity
 A security app using facial recognition that locks your mac when needed. This code also works on windows.
 
-## Start
+## Instructions
 
 ### Prepare
 
@@ -22,6 +22,12 @@ run with low interval (high speed):
 python3 main.py -s high
 ```
 Or use "low" to run with higher interval
+
+### Find-tune for Camera
+
+You need to turn off all the unnecessary plug-ins on the mac book to reduce the possiblity for causing unexpected problems.
+
+It's good and recommend to open the "Stage light" function on mac to boost the recognition. 
 
 ## Contribute
 

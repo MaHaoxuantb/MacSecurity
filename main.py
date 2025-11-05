@@ -66,6 +66,9 @@ def verify(mode: Mode):
                     return False
                 return True
             elif mode == Mode.NORMAL:
+                if result["distance"] > 0.56: # adjust this if not MacBook
+                    print("Normal mode: Distance too high. Access denied.")
+                    return False
                 return True
             else: # no need for this part
                 assert "Unreachable code reached"
