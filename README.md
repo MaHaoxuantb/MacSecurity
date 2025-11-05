@@ -13,15 +13,23 @@ pip3 install -r requirements.txt
 ```
 
 ### Run
-normal run:
+
+Normal run:
 ```
 python3 main.py
 ```
-run with low interval (high speed):
+
+### Options
+
+Run with low interval (high, or use "low" to run with higher interval):
 ```
 python3 main.py -s high
 ```
-Or use "low" to run with higher interval
+Run with stricter rules (strict, or use "normal" to run with regular rule set):
+```
+python3 main.py -m strict
+``` 
+
 
 ### Find-tune for Camera
 
