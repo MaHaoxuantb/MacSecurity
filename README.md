@@ -30,3 +30,5 @@ This respository accepts and welcome your contribution.
 ## Info
 
 These codes belong to ThomasB. Open-source under Apache License 2.0.
+
+Codes are been tested on a MacBook Pro, might don't work for windows or other cameras instead of the build-in one.
