@@ -66,7 +66,7 @@ def verify(mode: Mode):
                     return False
                 return True
             elif mode == Mode.NORMAL:
-                if result["distance"] > 0.56: # adjust this if not MacBook
+                if result["distance"] > 0.60: # adjust this if not MacBook
                     print("Normal mode: Distance too high. Access denied.")
                     return False
                 return True
@@ -91,6 +91,8 @@ def start():
         detection_interval = 1
     elif str(args.speed) == "low":
         detection_interval = 5
+    elif 20 > int(args.speed) > 0 and str(args.speed).isdigit():
+        detection_interval = int(args.speed)
     else:
         print("Invalid speed argument. Using default 'low' interval.")
         detection_interval = 5
