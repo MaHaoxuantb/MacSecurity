@@ -1,5 +1,8 @@
 # MacSecurity
+
 A security app using facial recognition that locks your mac when needed. This code also works on windows.
+
+Codes in this resp is all written by human.
 
 ## Instructions
 
